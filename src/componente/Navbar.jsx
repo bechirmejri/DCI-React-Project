@@ -198,17 +198,22 @@ export default function Navbar() {
         )}
       </Disclosure>
       {/* Render filtered games */}
-      <div>
-        {filteredGames.map((game) => (
-          <div key={game.id}>
-            {game.title}
-            <img
-              src={`images/games/${game.image}.webp`}
-              alt={game.title}
-            />
-          </div>
-        ))}
+      <div className="grid grid-cols-2 gap-4">
+  {filteredGames.map((game) => (
+    <div key={game.id} className="group bg-white rounded-lg shadow-md overflow-hidden relative">
+      <img
+        src={`images/games/${game.image}.webp`}
+        alt={game.title}
+        className="w-full h-auto group-hover:scale-105 transition-transform duration-300"
+      />
+      <div className="p-4">
+        <h3 className="text-lg font-semibold">{game.title}</h3>
       </div>
+      <div className="overlay absolute inset-0 bg-black opacity-0 group-hover:opacity-50 transition-opacity duration-300"></div>
+    </div>
+  ))}
+</div>
+
     </>
   );
 }
