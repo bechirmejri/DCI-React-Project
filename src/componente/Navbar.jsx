@@ -183,7 +183,16 @@ export default function Navbar() {
           </>
         )}
       </Disclosure>
-      <p>{`There are ${games.length} games.`}</p>
+      <div>
+        {games.map(game => {
+          return (
+            <>
+              <div key={game.id}>{game.title}</div>
+              <img src={`images/games/${game.image}.webp`} />
+            </>
+          );
+        })}
+      </div>
     </>
   );
 }
