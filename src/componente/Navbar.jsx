@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
-import { Bars3Icon, BellIcon, XMarkIcon, HeartIcon } from "@heroicons/react/24/outline";
+import { Bars3Icon, BellIcon, XMarkIcon, HeartIcon, ShoppingCartIcon } from "@heroicons/react/24/outline"; // Importieren Sie das ShoppingCartIcon
 import games from "../data/games.json";
 
 const navigation = [
@@ -272,7 +272,7 @@ export default function Navbar() {
       <div className="flex justify-center mb-4 mx-auto border-2 border-red-500 shadow-lg p-3 rounded-lg">
         <div className="flex flex-col items-center">
           <span className="text-lg font-semibold text-green-500 mb-2">Total Price: {totalPrice.toFixed(2)} Euro</span>
-          <span className="text-sm text-gray-400">Number of games: {favorites.length}</span>
+          <span className="text-sm text-red-400  hover:text-green-500">Number of games: {favorites.length}</span>
           {/* Liste der ausgewählten Spiele und ihre Einzelpreise */}
           <div className="mt-2">
             {favorites.map((gameId) => {
@@ -285,6 +285,10 @@ export default function Navbar() {
               );
             })}
           </div>
+          {/* Zu Kasse gehen mit Einkaufswagen-Icon und Styles */}
+          <span className="text-sm text-gray-400 mt-2 flex items-center hover:text-green-500">
+            <ShoppingCartIcon className="h-5 w-5 mr-1" />Zu Kasse gehen
+          </span>
         </div>
       </div>
     </>
