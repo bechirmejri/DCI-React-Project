@@ -287,7 +287,7 @@ export default function Navbar() {
           </div>
           {/* Zu Kasse gehen mit Einkaufswagen-Icon und Styles */}
           <span className="text-sm text-gray-400 mt-2 flex items-center hover:text-green-500">
-            <ShoppingCartIcon className="h-5 w-5 mr-1" />Zu Kasse gehen
+            <ShoppingCartIcon className="h-5 w-5 mr-1" />Basket
           </span>
         </div>
       </div>
