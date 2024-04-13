@@ -270,9 +270,23 @@ export default function Navbar() {
 
       {/* Total Price */}
       <div className="flex justify-center mb-4 mx-auto border-2 border-red-500 shadow-lg p-3 rounded-lg">
-        <span className="text-lg font-semibold text-green-500">Total Price: {totalPrice.toFixed(2)} Euro</span>
+        <div className="flex flex-col items-center">
+          <span className="text-lg font-semibold text-green-500 mb-2">Total Price: {totalPrice.toFixed(2)} Euro</span>
+          <span className="text-sm text-gray-400">Number of games: {favorites.length}</span>
+          {/* Liste der ausgewählten Spiele und ihre Einzelpreise */}
+          <div className="mt-2">
+            {favorites.map((gameId) => {
+              const selectedGame = games.find((game) => game.id === gameId);
+              return (
+                <div key={gameId} className="flex justify-between w-full">
+                  <span>{selectedGame.title}</span>
+                  <span>{selectedGame.price.toFixed(2)} Euro</span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
       </div>
-      
     </>
   );
 }
