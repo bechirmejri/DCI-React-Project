@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Fragment } from "react";
+import { Fragment, useEffect } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon, HeartIcon, ShoppingCartIcon } from "@heroicons/react/24/outline"; // Importieren Sie das ShoppingCartIcon
 import games from "../data/games.json";
@@ -24,14 +24,21 @@ export default function Navbar() {
   };
 
   const handleGameSelect = (gameId) => {
-    if (favorites.includes(gameId)) {
-      setFavorites(favorites.filter((id) => id !== gameId));
+    const isFavorite = favorites.includes(gameId);
+    let updatedFavorites = [...favorites];
+
+    if (isFavorite) {
+      updatedFavorites = favorites.filter((id) => id !== gameId);
     } else {
-      setFavorites([...favorites, gameId]);
+      updatedFavorites.push(gameId);
     }
-    // Berechne den Gesamtpreis neu
-    calculateTotalPrice();
+
+    setFavorites(updatedFavorites);
   };
+
+  useEffect(() => {
+    calculateTotalPrice();
+  }, [favorites]);
 
   const isGameSelected = (gameId) => {
     return favorites.includes(gameId);
@@ -238,7 +245,7 @@ export default function Navbar() {
               onClick={() => handleGameSelect(game.id)}
               className={classNames(
                 "absolute top-0 right-0 m-2 text-gray-400 ",
-                isGameSelected(game.id) ? "text-orange-600" : ""
+                isGameSelected(game.id) ? "text-red-600" : ""
               )}
             >
               <HeartIcon className="h-5 w-5 mr-1" />
@@ -256,7 +263,7 @@ export default function Navbar() {
                 onClick={() => handleGameSelect(game.id)}
                 className={classNames(
                   "absolute top-0 right-0 m-2 text-gray-400 hover:text-orange-600",
-                  isGameSelected(game.id) ? "text-orange-600" : ""
+                  isGameSelected(game.id) ? "text-red-600" : ""
                 )}
               >
                 <HeartIcon className="h-5 w-5 mr-1" />
