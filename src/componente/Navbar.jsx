@@ -197,7 +197,7 @@ export default function Navbar() {
         )}
       </Disclosure>
       {/* Render filtered games */}
-      <div className="mt-20  grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <div className="mt-20 mb-3 bg bg-lime-50 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
   {filteredGames.map((game) => (
     <div key={game.id} className="group rounded-lg overflow-hidden relative border border-green-600 shadow-md hover:shadow-lg ">
       <img
