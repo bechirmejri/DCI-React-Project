@@ -27,7 +27,7 @@ export default function Navbar() {
 
   return (
     <>
-      <Disclosure as="nav" className="bg-gray-800 shadow">
+      <Disclosure as="nav" className="bg-gray-800 shadow mb-8 fixed w-full z-10 top-0">
         {({ open }) => (
           <>
             {/* Navbar content */}
@@ -197,23 +197,24 @@ export default function Navbar() {
         )}
       </Disclosure>
       {/* Render filtered games */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <div className="mt-20  grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
   {filteredGames.map((game) => (
-    <div key={game.id} className="group rounded-lg overflow-hidden relative shadow-lg bg-gray-800">
+    <div key={game.id} className="group rounded-lg overflow-hidden relative border border-green-600 shadow-md hover:shadow-lg ">
       <img
         src={`images/games/${game.image}.webp`}
         alt={game.title}
         className="w-full h-auto rounded-lg group-hover:scale-110 transition-transform duration-300"
-            />
-            <div className="p-4 bg-gray-800 bg-opacity-20 absolute inset-0 flex flex-col justify-end">
-            <h3 className="text-lg font-semibold text-white hover:text-green-500 transition-colors duration-300">{game.title}</h3>
-            <h3 className="text-lg font-semibold text-white hover:text-green-500 transition-colors duration-300">{game.platforms}</h3>
-            <h3 className="text-lg font-semibold text-white hover:text-green-500 transition-colors duration-300">{game.genre}</h3>
-
-            </div>
-          </div>
-        ))}
+      />
+      <div className="p-4 bg-gray-800 bg-opacity-20 absolute inset-0 flex flex-col justify-end">
+        <h3 className="text-lg font-semibold text-white hover:text-green-500 transition-colors duration-300">{game.title}</h3>
+        <h3 className="text-lg font-semibold text-white hover:text-green-500 transition-colors duration-300">{game.platforms}</h3>
+        <h3 className="text-lg font-semibold text-white hover:text-green-500 transition-colors duration-300">{game.genre}</h3>
+        <h3 className="text-lg font-semibold text-white hover:text-green-500 transition-colors duration-300">{game.price} Euro</h3>
       </div>
+    </div>
+  ))}
+</div>
+
     </>
   );
 }
