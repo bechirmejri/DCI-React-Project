@@ -229,7 +229,7 @@ export default function Navbar() {
           </>
         )}
       </Disclosure>
-     
+
       {/* Render filtered games */}
       <div className="mt-20 mb-3 bg bg-lime grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols4 gap-6 bg-gray-950">
         {filteredGames.map((game) => (
@@ -238,11 +238,11 @@ export default function Navbar() {
               onClick={() => handleGameSelect(game.id)}
               className={classNames(
                 "absolute top-0 right-0 m-2 text-gray-400 ",
-                isGameSelected(game.id) ? "text-red-500" : ""
+                isGameSelected(game.id) ? "text-orange-600" : ""
               )}
             >
               <HeartIcon className="h-5 w-5 mr-1" />
-              Add to Favorites
+              Buy now!
             </button>
             <img
               src={`images/games/${game.image}.webp`}
@@ -255,39 +255,39 @@ export default function Navbar() {
               <button
                 onClick={() => handleGameSelect(game.id)}
                 className={classNames(
-                  "absolute top-0 right-0 m-2 text-gray-400 hover:text-green-500",
-                  isGameSelected(game.id) ? "text-red-500" : ""
+                  "absolute top-0 right-0 m-2 text-gray-400 hover:text-orange-600",
+                  isGameSelected(game.id) ? "text-orange-600" : ""
                 )}
               >
                 <HeartIcon className="h-5 w-5 mr-1" />
-                Add to Favorites
+                Buy now!
               </button>
             </div>
           </div>
         ))}
-        
+
       </div>
 
       {/* Total Price */}
-      <div className="flex justify-center mb-4 mx-auto border-2 border-red-500 shadow-lg p-3 rounded-lg">
+      <div className="flex justify-center mb-4 mx-auto border-2 border-orange-600 shadow-lg p-3 rounded-lg">
         <div className="flex flex-col items-center">
-          <span className="text-lg font-semibold text-green-500 mb-2">Total Price: {totalPrice.toFixed(2)} Euro</span>
-          <span className="text-sm text-red-400  hover:text-green-500">Number of games: {favorites.length}</span>
+          <span className="text-lg font-semibold text-orange-600 mb-2">Total Price: {totalPrice.toFixed(2)} Euro</span>
+          <span className="text-sm text-gray-700">Number of games: {favorites.length}</span>
           {/* Liste der ausgewählten Spiele und ihre Einzelpreise */}
           <div className="mt-2">
             {favorites.map((gameId) => {
               const selectedGame = games.find((game) => game.id === gameId);
               return (
                 <div key={gameId} className="flex justify-between w-full">
-                  <span>{selectedGame.title}</span>
+                  <span className="text-sm text-gray-300">{selectedGame.title}</span>
                   <span>{selectedGame.price.toFixed(2)} Euro</span>
                 </div>
               );
             })}
           </div>
           {/* Zu Kasse gehen mit Einkaufswagen-Icon und Styles */}
-          <span className="text-sm text-gray-100 mt-2 flex items-center hover:text-green-500">
-            <ShoppingCartIcon className="h-5 w-5 mr-1" />Basket
+          <span className="text-sm text-gray-100 mt-2 flex items-center underline hover:text-orange-600">
+            <ShoppingCartIcon className="h-5 w-5 mr-1 text-orange-600" />Checkout
           </span>
         </div>
       </div>
