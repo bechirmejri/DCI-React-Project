@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
-import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { Bars3Icon, BellIcon, XMarkIcon, HeartIcon } from "@heroicons/react/24/outline";
 import games from "../data/games.json";
 
 const navigation = [
@@ -16,9 +16,36 @@ function classNames(...classes) {
 
 export default function Navbar() {
   const [searchText, setSearchText] = useState("");
+  const [favorites, setFavorites] = useState([]);
+  const [totalPrice, setTotalPrice] = useState(0); // Zustand für den Gesamtpreis
 
   const handleSearchTextChange = (e) => {
     setSearchText(e.target.value);
+  };
+
+  const handleGameSelect = (gameId) => {
+    if (favorites.includes(gameId)) {
+      setFavorites(favorites.filter((id) => id !== gameId));
+    } else {
+      setFavorites([...favorites, gameId]);
+    }
+    // Berechne den Gesamtpreis neu
+    calculateTotalPrice();
+  };
+
+  const isGameSelected = (gameId) => {
+    return favorites.includes(gameId);
+  };
+
+  const calculateTotalPrice = () => {
+    let totalPrice = 0;
+    favorites.forEach((id) => {
+      const selectedGame = games.find((game) => game.id === id);
+      if (selectedGame) {
+        totalPrice += selectedGame.price;
+      }
+    });
+    setTotalPrice(totalPrice); // Setze den Gesamtpreis-Zustand
   };
 
   const filteredGames = games.filter((game) =>
@@ -202,24 +229,50 @@ export default function Navbar() {
           </>
         )}
       </Disclosure>
+     
       {/* Render filtered games */}
       <div className="mt-20 mb-3 bg bg-lime grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols4 gap-6 bg-gray-950">
         {filteredGames.map((game) => (
           <div key={game.id} className="group rounded-lg overflow-hidden relative border border-orange-600 shadow-md hover:shadow-lg">
+            <button
+              onClick={() => handleGameSelect(game.id)}
+              className={classNames(
+                "absolute top-0 right-0 m-2 text-gray-400 ",
+                isGameSelected(game.id) ? "text-red-500" : ""
+              )}
+            >
+              <HeartIcon className="h-5 w-5 mr-1" />
+              Add to Favorites
+            </button>
             <img
               src={`images/games/${game.image}.webp`}
               alt={game.title}
               className="w-full h-auto rounded-lg group-hover:scale-110 transition-transform duration-300"
             />
             <div className="p-4 bg-gray-800 bg-opacity-20 absolute inset-0 flex flex-col justify-end">
-              <h3 className="text-lg font-semibold text-white hover:text-orange-600 transition-colors duration-300" style={{ textShadow: '1px 1px 3px #000' }}>{game.title}</h3>
-              <h3 className="text-lg font-semibold text-white hover:text-orange-600 transition-colors duration-300" style={{ textShadow: '1px 1px 3px #000' }}>{game.price} Euro</h3>
+              <h3 className="text-lg font-semibold text-white" style={{ textShadow: '1px 1px 3px #000' }}>{game.title}</h3>
+              <h3 className="text-lg font-semibold text-white" style={{ textShadow: '1px 1px 3px #000' }}>{game.price} Euro</h3>
+              <button
+                onClick={() => handleGameSelect(game.id)}
+                className={classNames(
+                  "absolute top-0 right-0 m-2 text-gray-400 hover:text-green-500",
+                  isGameSelected(game.id) ? "text-red-500" : ""
+                )}
+              >
+                <HeartIcon className="h-5 w-5 mr-1" />
+                Add to Favorites
+              </button>
             </div>
           </div>
         ))}
+        
       </div>
 
-
+      {/* Total Price */}
+      <div className="flex justify-center mb-4 mx-auto border-2 border-red-500 shadow-lg p-3 rounded-lg">
+        <span className="text-lg font-semibold text-green-500">Total Price: {totalPrice.toFixed(2)} Euro</span>
+      </div>
+      
     </>
   );
 }
