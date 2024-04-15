@@ -153,7 +153,7 @@ export default function Navbar() {
                         <span className="sr-only">Open user menu</span>
                         <img
                           className="h-8 w-8 rounded-full"
-                          src="../images/BelleDelphine.webp"
+                          src="../images/avatar.png"
                           alt=""
                         />
                       </Menu.Button>
@@ -292,10 +292,7 @@ export default function Navbar() {
       {/* Total Price */}
       <div className="flex justify-center mb-4 mx-auto border-2 border-orange-600 shadow-lg p-3 rounded-lg">
         <div className="flex flex-col items-center">
-          <span className="text-lg font-semibold text-orange-600 mb-2">
-            Total Price: {totalPrice.toFixed(2)} Euro
-          </span>
-          <span className="text-sm text-gray-700">
+          <span className="text-sm text-gray-300 underline">
             Number of games: {favorites.length}
           </span>
           {/* Listing of cart */}
@@ -304,14 +301,16 @@ export default function Navbar() {
               const selectedGame = games.find((game) => game.id === gameId);
               return (
                 <div key={gameId} className="flex justify-between w-full">
-                  <span className="text-sm text-gray-300">
+                  <span className="text-sm text-gray-200">
                     {selectedGame.title}
                   </span>
-                  <span>{selectedGame.price.toFixed(2)} Euro</span>
                 </div>
               );
             })}
           </div>
+          <span className="text-lg font-semibold text-orange-600 mb-2 overline">
+            Total Price: {totalPrice.toFixed(2)} Euro
+          </span>
           {/* Checkout */}
           <span
             className="text-sm text-gray-100 mt-2 flex items-center underline hover:text-orange-600"
@@ -325,33 +324,32 @@ export default function Navbar() {
         {/* Open the modal using document.getElementById('ID').showModal() method */}
 
         <dialog id="my_modal_5" className="modal modal-bottom sm:modal-middle">
-  <div className="modal-box bg-white shadow-lg rounded-lg p-4">
-    <h3 className="font-bold text-lg">{totalPrice.toFixed(2)} Euro</h3>
-    <div className="mt-2">
-      {favorites.map((gameId) => {
-        const selectedGame = games.find((game) => game.id === gameId);
-        return (
-          <div key={gameId} className="flex justify-between items-center w-full py-1 border-b border-gray-200">
-            <span className="text-sm text-gray-700">
-              {selectedGame.title}
-            </span>
-            <span className="text-sm text-gray-700">{selectedGame.price.toFixed(2)} Euro</span>
+          <div className="modal-box bg-white shadow-lg rounded-lg p-4">
+            <h3 className="font-bold text-lg">{totalPrice.toFixed(2)} Euro</h3>
+            <div className="mt-2">
+              {favorites.map((gameId) => {
+                const selectedGame = games.find((game) => game.id === gameId);
+                return (
+                  <div key={gameId} className="flex justify-between items-center w-full py-1 border-b border-gray-200">
+                    <span className="text-sm text-gray-700">
+                      {selectedGame.title}
+                    </span>
+                    <span className="text-sm text-gray-700">{selectedGame.price.toFixed(2)} Euro</span>
+                  </div>
+                );
+              })}
+            </div>
+
+            <div className="modal-action mt-4 flex justify-end">
+              <form method="dialog">
+                {/* if there is a button in form, it will close the modal */}
+                <button className="btn bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded focus:outline-none focus:shadow-outline">
+                  Close
+                </button>
+              </form>
+            </div>
           </div>
-        );
-      })}
-    </div>
-
-    <div className="modal-action mt-4 flex justify-end">
-      <form method="dialog">
-        {/* if there is a button in form, it will close the modal */}
-        <button className="btn bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded focus:outline-none focus:shadow-outline">
-          Close
-        </button>
-      </form>
-    </div>
-  </div>
-</dialog>
-
+        </dialog>
       </div>
     </>
   );
