@@ -325,30 +325,33 @@ export default function Navbar() {
         {/* Open the modal using document.getElementById('ID').showModal() method */}
 
         <dialog id="my_modal_5" className="modal modal-bottom sm:modal-middle">
-          <div className="modal-box">
-            <h3 className="font-bold text-lg">{totalPrice.toFixed(2)} Euro</h3>
-            <div className="mt-2">
-              {favorites.map((gameId) => {
-                const selectedGame = games.find((game) => game.id === gameId);
-                return (
-                  <div key={gameId} className="flex justify-between w-full">
-                    <span className="text-sm text-gray-300">
-                      {selectedGame.title}
-                    </span>
-                    <span>{selectedGame.price.toFixed(2)} Euro</span>
-                  </div>
-                );
-              })}
-            </div>
-
-            <div className="modal-action">
-              <form method="dialog">
-                {/* if there is a button in form, it will close the modal */}
-                <button className="btn">Close</button>
-              </form>
-            </div>
+  <div className="modal-box bg-white shadow-lg rounded-lg p-4">
+    <h3 className="font-bold text-lg">{totalPrice.toFixed(2)} Euro</h3>
+    <div className="mt-2">
+      {favorites.map((gameId) => {
+        const selectedGame = games.find((game) => game.id === gameId);
+        return (
+          <div key={gameId} className="flex justify-between items-center w-full py-1 border-b border-gray-200">
+            <span className="text-sm text-gray-700">
+              {selectedGame.title}
+            </span>
+            <span className="text-sm text-gray-700">{selectedGame.price.toFixed(2)} Euro</span>
           </div>
-        </dialog>
+        );
+      })}
+    </div>
+
+    <div className="modal-action mt-4 flex justify-end">
+      <form method="dialog">
+        {/* if there is a button in form, it will close the modal */}
+        <button className="btn bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded focus:outline-none focus:shadow-outline">
+          Close
+        </button>
+      </form>
+    </div>
+  </div>
+</dialog>
+
       </div>
     </>
   );
