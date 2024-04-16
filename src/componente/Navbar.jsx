@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from "react";
 import { Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
@@ -313,7 +314,7 @@ function handleUpdateCartItemQuantity(gameId, amount) {
       </div>
 
       {/* Total Price */}
-      <div className="flex justify-center mb-4 mx-auto border-2 border-orange-600 shadow-lg p-3 rounded-lg">
+      <div className="flex justify-center mb-4 mx-auto border-2 border-orange-600 shadow-lg p-3 rounded-lg fixed bottom-0 w-full bg-gray-900">
         <div className="flex flex-col items-center">
           <span className="text-sm text-gray-300 underline">
             Number of games: {favorites.length}
@@ -356,7 +357,7 @@ function handleUpdateCartItemQuantity(gameId, amount) {
     <span className="text-sm text-gray-100">{item.price.toFixed(2)} Euro</span>
     <div className="flex gap-2 items-center">
       <button
-        className="btn btn-sm bg-sky-800 text-slate-200 text-lg font-bold hover:text-slate-900 hover:bg-sky-400"
+        className="btn btn-sm bg-sky-800 text-slate-200 text-lg font-bold hover:text-slate-900 hover:bg-green-400"
         onClick={() => handleUpdateCartItemQuantity(item.id, -1)}
       >
         -
