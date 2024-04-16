@@ -24,11 +24,13 @@ export default function Navbar() {
   const [searchText, setSearchText] = useState("");
   const [favorites, setFavorites] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
+  const [card, setCard] = useState([]);
 
   const calculateTotalPrice = () => {
     let totalPrice = 0;
     favorites.forEach((id) => {
       const selectedGame = games.find((game) => game.id === id);
+
       if (selectedGame) {
         totalPrice += selectedGame.price;
       }
@@ -45,13 +47,18 @@ export default function Navbar() {
   };
 
   const handleGameSelect = (gameId) => {
-    const isFavorite = favorites.includes(gameId);
+    console.log(gameId)
+    console.log(favorites)
+    setCard([...card, gameId]);
+
+
+    const isFavorite = favorites.includes(gameId.id);
     let updatedFavorites = [...favorites];
 
     if (isFavorite) {
-      updatedFavorites = favorites.filter((id) => id !== gameId);
+      updatedFavorites = favorites.filter((id) => id !== gameId.id);
     } else {
-      updatedFavorites.push(gameId);
+      updatedFavorites.push(gameId.id);
     }
 
     setFavorites(updatedFavorites);
@@ -64,6 +71,22 @@ export default function Navbar() {
   const filteredGames = games.filter((game) =>
     game.title.toLowerCase().includes(searchText.toLowerCase())
   );
+
+/* Areats fun */
+function handleUpdateCartItemQuantity(gameId, amount) {
+  const updatedFavorites = card.map((item) => {
+    if (item.id === gameId) {
+      const selectedGame = games.find((game) => game.id === gameId);
+      const newQuantity = item.quantity + amount;
+      const newPrice = newQuantity * selectedGame.price;
+      return { ...item, quantity: newQuantity, price: newPrice };
+    }
+    return item;
+  });
+
+  setCard(updatedFavorites);
+}
+
 
   return (
     <>
@@ -247,7 +270,7 @@ export default function Navbar() {
             className="group rounded-lg overflow-hidden relative border border-orange-600 shadow-md hover:shadow-lg"
           >
             <button
-              onClick={() => handleGameSelect(game.id)}
+              onClick={() => handleGameSelect(game)}
               className={classNames(
                 "absolute top-0 right-0 m-2 text-gray-400 ",
                 isGameSelected(game.id) ? "text-orange-600" : ""
@@ -275,7 +298,7 @@ export default function Navbar() {
                 {game.price === 0 ? "Free to play" : `${game.price} Euro`}
               </h3>
               <button
-                onClick={() => handleGameSelect(game.id)}
+                onClick={() => handleGameSelect(game)}
                 className={classNames(
                   "absolute top-0 right-0 m-2 text-gray-400 hover:text-orange-600",
                   isGameSelected(game.id) ? "text-orange-600" : ""
@@ -302,7 +325,7 @@ export default function Navbar() {
               return (
                 <div key={gameId} className="flex justify-between w-full">
                   <span className="text-sm text-gray-200">
-                    {selectedGame.title}
+                  {/*   {selectedGame.title} */}
                   </span>
                 </div>
               );
@@ -325,19 +348,29 @@ export default function Navbar() {
 
         <dialog id="my_modal_5" className="modal modal-bottom sm:modal-middle">
           <div className="modal-box bg-gray-900 shadow-lg rounded-lg p-4">
-            <h3 className="font-bold text-lg text-gray-300">{totalPrice.toFixed(2)} Euro</h3>
+            <h3 className="font-bold text-lg text-gray-300">{card.reduce((acc, curr) => acc + curr.price, 0).toFixed(2)} Euro</h3>
             <div className="mt-2">
-              {favorites.map((gameId) => {
-                const selectedGame = games.find((game) => game.id === gameId);
-                return (
-                  <div key={gameId} className="flex justify-between items-center w-full py-1 border-b border-gray-200">
-                    <span className="text-sm text-gray-100 ">
-                      {selectedGame.title}
-                    </span>
-                    <span className="text-sm text-gray-100">{selectedGame.price.toFixed(2)} Euro</span>
-                  </div>
-                );
-              })}
+           {card.length>0?card.map((item) => (
+  <div key={item.id} className="flex justify-between items-center w-full py-1 border-b border-gray-200">
+    <span className="text-sm text-gray-100">{item.title}</span>
+    <span className="text-sm text-gray-100">{item.price.toFixed(2)} Euro</span>
+    <div className="flex gap-2 items-center">
+      <button
+        className="btn btn-sm bg-sky-800 text-slate-200 text-lg font-bold hover:text-slate-900 hover:bg-sky-400"
+        onClick={() => handleUpdateCartItemQuantity(item.id, -1)}
+      >
+        -
+      </button>
+      <span className="text-sm text-gray-100">{item.quantity}</span>
+      <button
+        className="btn btn-sm text-slate-100 bg-sky-800 text-lg font-bold hover:text-slate-900 hover:bg-green-400"
+        onClick={() => handleUpdateCartItemQuantity(item.id, 1)}
+      >
+        +
+      </button>
+    </div>
+  </div>
+)):'nothing to see'}
             </div>
 
             <div className="modal-action mt-4 flex justify-end">
