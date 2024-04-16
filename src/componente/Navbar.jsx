@@ -65,6 +65,30 @@ export default function Navbar() {
     game.title.toLowerCase().includes(searchText.toLowerCase())
   );
 
+  function handleUpdateCartItemQuantity(productId, amount) {
+    setFavorites((prevShoppingCart) => {
+      const updatedItems = [...prevShoppingCart.items];
+      const updatedItemIndex = updatedItems.findIndex(
+        (item) => item.id === productId
+      );
+
+      const updatedItem = {
+        ...updatedItems[updatedItemIndex],
+      };
+
+      updatedItem.quantity += amount;
+
+      if (updatedItem.quantity <= 0) {
+        updatedItems.splice(updatedItemIndex, 1);
+      } else {
+        updatedItems[updatedItemIndex] = updatedItem;
+      }
+
+      return {
+        items: updatedItems,
+      };
+    });
+  }
   return (
     <>
       <style>{`
@@ -324,20 +348,36 @@ export default function Navbar() {
         {/* Open the modal using document.getElementById('ID').showModal() method */}
 
         <dialog id="my_modal_5" className="modal modal-bottom sm:modal-middle">
-          <div className="modal-box bg-white shadow-lg rounded-lg p-4">
+          <div className="modal-box bg-gray-900 shadow-lg rounded-lg p-4">
             <h3 className="font-bold text-lg">{totalPrice.toFixed(2)} Euro</h3>
             <div className="mt-2">
-              {favorites.map((gameId) => {
-                const selectedGame = games.find((game) => game.id === gameId);
-                return (
-                  <div key={gameId} className="flex justify-between items-center w-full py-1 border-b border-gray-200">
-                    <span className="text-sm text-gray-700">
-                      {selectedGame.title}
-                    </span>
-                    <span className="text-sm text-gray-700">{selectedGame.price.toFixed(2)} Euro</span>
-                  </div>
-                );
-              })}
+            {favorites.map((item) => {
+            const formattedPrice = `$${item.price.toFixed(2)}`;
+
+            return (
+              <li
+                key={item.id}
+                className="flex justify-between items-center bg-sky-200  rounded-lg p-3">
+                <div>
+                  <span>{item.name}</span>
+                  <span> ({formattedPrice})</span>
+                </div>
+                <div className="flex gap-2 items-center">
+                  <button
+                    className="btn btn-sm bg-sky-800 text-slate-200 text-lg font-bold hover:text-slate-900 hover:bg-sky-400"
+                    onClick={() => handleUpdateCartItemQuantity(item.id, -1)}>
+                    -
+                  </button>
+                  <span className="text-lg">{item.quantity}</span>
+                  <button
+                    className="btn btn-sm text-slate-100 bg-sky-800 text-lg font-bold hover:text-slate-900 hover:bg-green-400"
+                    onClick={() => handleUpdateCartItemQuantity(item.id, 1)}>
+                    +
+                  </button>
+                </div>
+              </li>
+            );
+          })}
             </div>
 
             <div className="modal-action mt-4 flex justify-end">
