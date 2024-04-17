@@ -281,15 +281,16 @@ export default function Navbar() {
                 {game.price === 0 ? "Free to play" : `${game.price} Euro`}
               </h3>
               <button
-                onClick={() => handleGameSelect(game)}
-                className={classNames(
-                  "flex absolute top-0 right-0 m-4 hover:border-orange-600 text-lg text-white border-2 border-gray-400 p-2 bg-gray-900/50 rounded-lg",
-                  isGameSelected(game.id) ? "text-green-600" : ""
-                )}
-              >
-                <ShoppingCartIcon className="h-7 w-5 mr-3 text-orange-600" />
-                Buy now!
-              </button>
+              onClick={() => handleGameSelect(game)}
+              className={classNames(
+                "flex absolute top-0 right-0 m-4 hover:border-orange-600 text-lg text-white border-2 border-gray-400 p-2 rounded-lg",
+                isGameSelected(game.id) ? "bg-green-600" : "bg-gray-900/50"
+              )}
+            >
+              {/* Symbol wird hier bedingt gerendert */}
+              <ShoppingCartIcon className={`h-7 w-5 mr-3 ${isGameSelected(game.id) ? "text-white" : "text-orange-600"}`} />
+              Buy now!
+            </button>
             </div>
           </div>
         ))}
