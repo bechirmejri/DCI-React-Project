@@ -1,15 +1,7 @@
 import { useState, useEffect } from "react";
 import { Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
-import {
-  Bars3Icon,
-  BellIcon,
-  XMarkIcon,
-  ShoppingCartIcon,
-  UserIcon,
-  Cog8ToothIcon,
-  ArrowRightStartOnRectangleIcon,
-} from "@heroicons/react/24/outline";
+import { Bars3Icon, BellIcon, XMarkIcon, ShoppingCartIcon, UserIcon, Cog8ToothIcon, ArrowRightStartOnRectangleIcon } from "@heroicons/react/24/outline";
 import games from "../data/games.json";
 
 const navigation = [
@@ -49,9 +41,10 @@ export default function Navbar() {
   };
 
   const handleGameSelect = (gameId) => {
-    console.log(gameId);
-    console.log(favorites);
+    console.log(gameId)
+    console.log(favorites)
     setCard([...card, gameId]);
+
 
     const isFavorite = favorites.includes(gameId.id);
     let updatedFavorites = [...favorites];
@@ -85,7 +78,12 @@ export default function Navbar() {
     });
 
     setCard(updatedFavorites);
-  }
+  };
+
+  const handleClearCart = () => {
+    setCard([]);
+    setFavorites([]);
+  };
 
   return (
     <>
@@ -121,8 +119,7 @@ export default function Navbar() {
                     className="h-8 w-auto"
                     src="../images/flask.png"
                     alt="LevelUp"
-                  />
-                  <span className="text-orange-600 text-xl font">Level-Up</span>
+                  /><span className="text-orange-600 text-xl font">Level-Up</span>
                 </div>
                 {/* Navbar links */}
                 <div className="hidden sm:ml-6 sm:block">
@@ -143,14 +140,14 @@ export default function Navbar() {
                       </a>
                     ))}
                     {/* Search input */}
-                    <div className="relative flex justify-center w-full mt-2">
+                    <div className="relative flex justify-center w-full">
                       <input
                         value={searchText}
                         onChange={handleSearchTextChange}
                         type="search"
-                        className="text-center bg-purple-white shadow-md rounded border-0 p-0.5 focus:outline-none focus:ring-2 focus:ring-orange-600"
-                        placeholder="Search for game"
-                        style={{ fontSize: "16px" }}
+                        className="text-center shadow-md rounded p-0.5 border-2 border-orange-800 focus:outline-none focus:ring-2 focus:ring-orange-600"
+                        placeholder="search"
+                        style={{ fontSize: '13px' }}
                       />
                       <div className="absolute pin-r pin-t text-purple-lighter"></div>
                     </div>
@@ -175,7 +172,7 @@ export default function Navbar() {
                         <span className="absolute -inset-1.5" />
                         <span className="sr-only">Open user menu</span>
                         <img
-                          className="h-8 w-8 rounded-full"
+                          className="h-9 w-9 rounded-full"
                           src="../images/avatar.png"
                           alt=""
                         />
@@ -200,8 +197,7 @@ export default function Navbar() {
                                 active ? "bg-orange-600" : "",
                                 "flex justify-between px-4 py-2 text-lg text-white border-b border-gray-800"
                               )}
-                            >
-                              <UserIcon class="h-6 w-6 text-white" />
+                            ><UserIcon class="h-6 w-6 text-white" />
                               Dashbord
                             </a>
                           )}
@@ -214,8 +210,7 @@ export default function Navbar() {
                                 active ? "bg-orange-600" : "",
                                 "flex justify-between px-4 py-2 text-lg text-white border-b border-gray-800"
                               )}
-                            >
-                              <Cog8ToothIcon class="h-6 w-6 text-white" />
+                            ><Cog8ToothIcon class="h-6 w-6 text-white" />
                               Settings
                             </a>
                           )}
@@ -228,8 +223,7 @@ export default function Navbar() {
                                 active ? "bg-orange-600" : "",
                                 "flex justify-between px-4 py-2 text-lg text-white"
                               )}
-                            >
-                              <ArrowRightStartOnRectangleIcon class="h-6 w-6 text-white" />
+                            ><ArrowRightStartOnRectangleIcon class="h-6 w-6 text-white" />
                               Logout
                             </a>
                           )}
@@ -293,16 +287,11 @@ export default function Navbar() {
               <button
                 onClick={() => handleGameSelect(game)}
                 className={classNames(
-                  "flex absolute top-0 right-0 m-4 hover:border-orange-600 text-lg text-white border-2 border-gray-400 p-2 rounded-lg",
-                  isGameSelected(game.id) ? "bg-green-600" : "bg-gray-900/50"
+                  "flex absolute top-0 right-0 m-4 text-gray-400 hover:border-orange-600 text-lg text-white border-2 border-gray-400 p-2 bg-gray-900/50 rounded-lg",
+                  isGameSelected(game.id) ? "bg-green-700" : "bg-gray-900/50"
                 )}
               >
-                {/* Symbol wird hier bedingt gerendert */}
-                <ShoppingCartIcon
-                  className={`h-7 w-5 mr-3 ${
-                    isGameSelected(game.id) ? "text-white" : "text-orange-600"
-                  }`}
-                />
+                <ShoppingCartIcon className="h-7 w-5 mr-3 text-orange-600" />
                 Buy now!
               </button>
             </div>
@@ -348,40 +337,38 @@ export default function Navbar() {
             <div className="mt-2">
               {card.length > 0
                 ? card.map((item) => (
-                    <div
-                      key={item.id}
-                      className="flex justify-between items-center w-full py-1 border-b border-gray-700"
-                    >
-                      <span className="text-sm text-white">{item.title}</span>
+                  <div
+                    key={item.id}
+                    className="flex justify-between items-center w-full py-1 border-b border-gray-700"
+                  >
+                    <span className="text-sm text-white">{item.title}</span>
+                    <div className="flex-grow"></div> {/* Platzhalter, um den Raum zwischen title und price zu füllen */}
+                    <span className="text-sm text-white mr-3">{item.price.toFixed(2)} Euro</span>
+                    <div className="flex gap-2 items-center">
+                      <button
+                        className="btn btn-sm bg-orange-600 text-white text-lg font-bold hover:bg-red-600"
+                        onClick={() =>
+                          handleUpdateCartItemQuantity(item.id, -1)
+                        }
+                      >
+                        -
+                      </button>
                       <span className="text-sm text-white">
-                        {item.price.toFixed(2)} Euro
+                        {item.quantity}
                       </span>
-                      <div className="flex gap-2 items-center">
-                        <button
-                          className="btn btn-sm bg-orange-600 text-white text-lg font-bold hover:bg-red-600"
-                          onClick={() =>
-                            handleUpdateCartItemQuantity(item.id, -1)
-                          }
-                        >
-                          -
-                        </button>
-                        <span className="text-sm text-white">
-                          {item.quantity}
-                        </span>
-                        <button
-                          className="btn btn-sm text-white bg-orange-600 text-lg font-bold hover:bg-green-600"
-                          onClick={() =>
-                            handleUpdateCartItemQuantity(item.id, 1)
-                          }
-                        >
-                          +
-                        </button>
-                      </div>
+                      <button
+                        className="btn btn-sm text-white bg-orange-600 text-lg font-bold hover:bg-green-600"
+                        onClick={() =>
+                          handleUpdateCartItemQuantity(item.id, 1)
+                        }
+                      >
+                        +
+                      </button>
                     </div>
-                  ))
+                  </div>
+                ))
                 : "Cart is empty"}
             </div>
-
             <div className="modal-action mt-4 flex justify-end">
               <form method="dialog">
                 {/* if there is a button in form, it will close the modal */}
@@ -392,6 +379,13 @@ export default function Navbar() {
                 <button className="btn bg-orange-500 hover:bg-red-600 text-white px-4 py-2 rounded focus:outline-none focus:shadow-outline">
                   Close
                 </button>
+                {/* Button zum Löschen aller Spiele */}
+                <button
+                  className="btn bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded focus:outline-none focus:shadow-outline ml-2"
+                  onClick={() => handleClearCart()} // handleClearCart ist eine Funktion, die den Warenkorb leert
+                >
+                  Delete all games
+                </button>
                 {/* Button für "Jetzt bezahlen" mit Link */}
                 <a
                   href="https://www.klarna.com/sofort/"
@@ -399,7 +393,7 @@ export default function Navbar() {
                   rel="noopener noreferrer"
                   className="btn bg-orange-600 hover:bg-green-600 text-white px-4 py-2 rounded ml-2 focus:outline-none focus:shadow-outline"
                 >
-                  Pay Now
+                  Pay now
                 </a>
               </form>
             </div>
