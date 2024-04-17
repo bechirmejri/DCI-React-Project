@@ -1,14 +1,7 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from "react";
 import { Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
-import {
-  Bars3Icon,
-  BellIcon,
-  XMarkIcon,
-  HeartIcon,
-  ShoppingCartIcon,
-} from "@heroicons/react/24/outline";
+import { Bars3Icon, BellIcon, XMarkIcon, ShoppingCartIcon, UserIcon, Cog8ToothIcon, ArrowRightStartOnRectangleIcon } from "@heroicons/react/24/outline";
 import games from "../data/games.json";
 
 const navigation = [
@@ -73,20 +66,19 @@ export default function Navbar() {
     game.title.toLowerCase().includes(searchText.toLowerCase())
   );
 
-/* Areats fun */
-function handleUpdateCartItemQuantity(gameId, amount) {
-  const updatedFavorites = card.map((item) => {
-    if (item.id === gameId) {
-      const selectedGame = games.find((game) => game.id === gameId);
-      const newQuantity = item.quantity + amount;
-      const newPrice = newQuantity * selectedGame.price;
-      return { ...item, quantity: newQuantity, price: newPrice };
-    }
-    return item;
-  });
+  function handleUpdateCartItemQuantity(gameId, amount) {
+    const updatedFavorites = card.map((item) => {
+      if (item.id === gameId) {
+        const selectedGame = games.find((game) => game.id === gameId);
+        const newQuantity = item.quantity + amount;
+        const newPrice = newQuantity * selectedGame.price;
+        return { ...item, quantity: newQuantity, price: newPrice };
+      }
+      return item;
+    });
 
-  setCard(updatedFavorites);
-}
+    setCard(updatedFavorites);
+  }
 
 
   return (
@@ -118,7 +110,7 @@ function handleUpdateCartItemQuantity(gameId, amount) {
                   </Disclosure.Button>
                 </div>
                 {/* Logo */}
-                <div className="flex flex-shrink-0 items-center">
+                <div className="flex flex-shrink-0 items-center justify-center w-full sm:w-auto">
                   <img
                     className="h-8 w-auto"
                     src="../images/flask.png"
@@ -144,7 +136,7 @@ function handleUpdateCartItemQuantity(gameId, amount) {
                       </a>
                     ))}
                     {/* Search input */}
-                    <div className="relative mr-6 my-2">
+                    <div className="relative flex justify-center w-full mt-2">
                       <input
                         value={searchText}
                         onChange={handleSearchTextChange}
@@ -162,7 +154,7 @@ function handleUpdateCartItemQuantity(gameId, amount) {
                   {/* Notification Bell */}
                   <button
                     type="button"
-                    className="relative rounded-full bg-orange-800 p-1 text-white hover:text-white focus:outline-none focus:ring-2 focus:ring-orange-600 focus:ring-offset-2 focus:ring-offset-gray-800"
+                    className="relative rounded-full bg-orange-800 p-1 text-white border-2 border-orange-800 hover:text-white hover:border-white"
                   >
                     <span className="absolute -inset-1.5" />
                     <span className="sr-only">View notifications</span>
@@ -172,7 +164,7 @@ function handleUpdateCartItemQuantity(gameId, amount) {
                   <Menu as="div" className="relative ml-3">
                     {/* Profile image button */}
                     <div>
-                      <Menu.Button className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-orange-600 focus:ring-offset-2 focus:ring-offset-gray-800">
+                      <Menu.Button className="relative flex rounded-full bg-gray-800 text-sm border-2 border-gray-900 hover:border-white">
                         <span className="absolute -inset-1.5" />
                         <span className="sr-only">Open user menu</span>
                         <img
@@ -192,17 +184,17 @@ function handleUpdateCartItemQuantity(gameId, amount) {
                       leaveFrom="transform opacity-100 scale-100"
                       leaveTo="transform opacity-0 scale-95"
                     >
-                      <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                      <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-gray-900 py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                         <Menu.Item>
                           {({ active }) => (
                             <a
                               href="#"
                               className={classNames(
                                 active ? "bg-orange-600" : "",
-                                "block px-4 py-2 text-sm text-gray-700"
+                                "flex justify-between px-4 py-2 text-lg text-white border-b border-gray-800"
                               )}
-                            >
-                              Your Profile
+                            ><UserIcon class="h-6 w-6 text-white" />
+                              Dashbord
                             </a>
                           )}
                         </Menu.Item>
@@ -212,9 +204,9 @@ function handleUpdateCartItemQuantity(gameId, amount) {
                               href="#"
                               className={classNames(
                                 active ? "bg-orange-600" : "",
-                                "block px-4 py-2 text-sm text-gray-700"
+                                "flex justify-between px-4 py-2 text-lg text-white border-b border-gray-800"
                               )}
-                            >
+                            ><Cog8ToothIcon class="h-6 w-6 text-white" />
                               Settings
                             </a>
                           )}
@@ -225,10 +217,10 @@ function handleUpdateCartItemQuantity(gameId, amount) {
                               href="#"
                               className={classNames(
                                 active ? "bg-orange-600" : "",
-                                "block px-4 py-2 text-sm text-gray-700"
+                                "flex justify-between px-4 py-2 text-lg text-white"
                               )}
-                            >
-                              Sign out
+                            ><ArrowRightStartOnRectangleIcon class="h-6 w-6 text-white" />
+                              Logout
                             </a>
                           )}
                         </Menu.Item>
@@ -264,22 +256,12 @@ function handleUpdateCartItemQuantity(gameId, amount) {
       </Disclosure>
 
       {/* Render filtered games */}
-      <div className="mt-20 mb-3 bg bg-lime grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols4 gap-6 bg-gray-950">
+      <div className="mt-20 mb-3 bg bg-lime grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols4 gap-6">
         {filteredGames.map((game) => (
           <div
             key={game.id}
-            className="group rounded-lg overflow-hidden relative border border-orange-600 shadow-md hover:shadow-lg"
+            className="group rounded-lg overflow-hidden relative border border-2 border-orange-600 shadow-md hover:shadow-lg"
           >
-            <button
-              onClick={() => handleGameSelect(game)}
-              className={classNames(
-                "absolute top-0 right-0 m-2 text-gray-400 ",
-                isGameSelected(game.id) ? "text-orange-600" : ""
-              )}
-            >
-              <HeartIcon className="h-5 w-5 mr-1" />
-              Buy now!
-            </button>
             <img
               src={`images/games/${game.image}.webp`}
               alt={game.title}
@@ -301,11 +283,11 @@ function handleUpdateCartItemQuantity(gameId, amount) {
               <button
                 onClick={() => handleGameSelect(game)}
                 className={classNames(
-                  "absolute top-0 right-0 m-2 text-gray-400 hover:text-orange-600",
+                  "flex absolute top-0 right-0 m-4 text-gray-400 hover:border-orange-600 text-lg text-white border-2 border-gray-400 p-2 bg-gray-900/50 rounded-lg",
                   isGameSelected(game.id) ? "text-orange-600" : ""
                 )}
               >
-                <HeartIcon className="h-5 w-5 mr-1" />
+                <ShoppingCartIcon className="h-7 w-5 mr-3 text-orange-600" />
                 Buy now!
               </button>
             </div>
@@ -314,9 +296,9 @@ function handleUpdateCartItemQuantity(gameId, amount) {
       </div>
 
       {/* Total Price */}
-      <div className="flex justify-center mb-4 mx-auto border-2 border-orange-600 shadow-lg p-3 rounded-lg fixed bottom-0 w-full bg-gray-900">
+      <div className="fixed bottom-0 w-full bg-gray-900 flex justify-center mx-auto border-2 border-orange-600 shadow-lg p-3 rounded-lg">
         <div className="flex flex-col items-center">
-          <span className="text-sm text-gray-300 underline">
+          <span className="text-sm text-gray-300">
             Number of games: {favorites.length}
           </span>
           {/* Listing of cart */}
@@ -326,7 +308,7 @@ function handleUpdateCartItemQuantity(gameId, amount) {
               return (
                 <div key={gameId} className="flex justify-between w-full">
                   <span className="text-sm text-gray-200">
-                  {/*   {selectedGame.title} */}
+                    {selectedGame.title}
                   </span>
                 </div>
               );
@@ -337,7 +319,7 @@ function handleUpdateCartItemQuantity(gameId, amount) {
           </span>
           {/* Checkout */}
           <span
-            className="text-sm text-gray-100 mt-2 flex items-center underline hover:text-orange-600"
+            className="text-sm text-gray-100 mt-2 flex items-center hover:text-orange-600"
             onClick={() => document.getElementById("my_modal_5").showModal()}
           >
             <ShoppingCartIcon className="h-5 w-5 mr-1 text-orange-600" />
@@ -348,36 +330,36 @@ function handleUpdateCartItemQuantity(gameId, amount) {
         {/* Open the modal using document.getElementById('ID').showModal() method */}
 
         <dialog id="my_modal_5" className="modal modal-bottom sm:modal-middle">
-          <div className="modal-box bg-gray-900 shadow-lg rounded-lg p-4">
-            <h3 className="font-bold text-lg text-gray-300">{card.reduce((acc, curr) => acc + curr.price, 0).toFixed(2)} Euro</h3>
+          <div className="modal-box bg-gray-900 shadow-lg rounded-lg p-4 border-2 border-orange-600">
             <div className="mt-2">
-           {card.length>0?card.map((item) => (
-  <div key={item.id} className="flex justify-between items-center w-full py-1 border-b border-gray-200">
-    <span className="text-sm text-gray-100">{item.title}</span>
-    <span className="text-sm text-gray-100">{item.price.toFixed(2)} Euro</span>
-    <div className="flex gap-2 items-center">
-      <button
-        className="btn btn-sm bg-sky-800 text-slate-200 text-lg font-bold hover:text-slate-900 hover:bg-green-400"
-        onClick={() => handleUpdateCartItemQuantity(item.id, -1)}
-      >
-        -
-      </button>
-      <span className="text-sm text-gray-100">{item.quantity}</span>
-      <button
-        className="btn btn-sm text-slate-100 bg-sky-800 text-lg font-bold hover:text-slate-900 hover:bg-green-400"
-        onClick={() => handleUpdateCartItemQuantity(item.id, 1)}
-      >
-        +
-      </button>
-    </div>
-  </div>
-)):'nothing to see'}
+              {card.length > 0 ? card.map((item) => (
+                <div key={item.id} className="flex justify-between items-center w-full py-1 border-b border-gray-700">
+                  <span className="text-sm text-white">{item.title}</span>
+                  <span className="text-sm text-white">{item.price.toFixed(2)} Euro</span>
+                  <div className="flex gap-2 items-center">
+                    <button
+                      className="btn btn-sm bg-orange-600 text-white text-lg font-bold hover:bg-red-600"
+                      onClick={() => handleUpdateCartItemQuantity(item.id, -1)}
+                    >
+                      -
+                    </button>
+                    <span className="text-sm text-white">{item.quantity}</span>
+                    <button
+                      className="btn btn-sm text-white bg-orange-600 text-lg font-bold hover:bg-green-600"
+                      onClick={() => handleUpdateCartItemQuantity(item.id, 1)}
+                    >
+                      +
+                    </button>
+                  </div>
+                </div>
+              )) : 'Cart is emtpy'}
             </div>
 
             <div className="modal-action mt-4 flex justify-end">
               <form method="dialog">
                 {/* if there is a button in form, it will close the modal */}
-                <button className="btn bg-orange-500 hover:bg-green-600 text-white px-4 py-2 rounded focus:outline-none focus:shadow-outline">
+                <h3 className="font-bold text-lg text-orange-600 text-right">{card.reduce((acc, curr) => acc + curr.price, 0).toFixed(2)} Euro</h3>
+                <button className="btn bg-orange-500 hover:bg-red-600 text-white px-4 py-2 rounded focus:outline-none focus:shadow-outline">
                   Close
                 </button>
               </form>
