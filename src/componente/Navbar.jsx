@@ -283,8 +283,8 @@ export default function Navbar() {
               <button
                 onClick={() => handleGameSelect(game)}
                 className={classNames(
-                  "flex absolute top-0 right-0 m-4 text-gray-400 hover:border-orange-600 text-lg text-white border-2 border-gray-400 p-2 bg-gray-900/50 rounded-lg",
-                  isGameSelected(game.id) ? "text-orange-600" : ""
+                  "flex absolute top-0 right-0 m-4 hover:border-orange-600 text-lg text-white border-2 border-gray-400 p-2 bg-gray-900/50 rounded-lg",
+                  isGameSelected(game.id) ? "text-green-600" : ""
                 )}
               >
                 <ShoppingCartIcon className="h-7 w-5 mr-3 text-orange-600" />
