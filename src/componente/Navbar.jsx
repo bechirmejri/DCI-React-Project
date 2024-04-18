@@ -40,23 +40,34 @@ export default function Navbar() {
     setSearchText(e.target.value);
   };
 
-  const handleGameSelect = (gameId) => {
-    console.log(gameId)
-    console.log(favorites)
-    setCard([...card, gameId]);
-
-
-    const isFavorite = favorites.includes(gameId.id);
+  const handleGameSelect = (game) => {
+    // console.log("Selected game: ", game);
+    const isFavorite = favorites.includes(game.id);
     let updatedFavorites = [...favorites];
 
     if (isFavorite) {
-      updatedFavorites = favorites.filter((id) => id !== gameId.id);
+      updatedFavorites = favorites.filter((id) => id !== game.id);
     } else {
-      updatedFavorites.push(gameId.id);
+      updatedFavorites.push(game.id);
+    }
+
+    const existingCartItem = card.find((item) => item.game.id === game.id);
+    if (existingCartItem) {
+      const updatedCard = card.map((item) => {
+        if (item.game.id === game.id) {
+          return { ...item, quantity: item.quantity + 1 };
+        }
+        return item;
+      });
+      setCard(updatedCard);
+    } else {
+      setCard([...card, { id: game.id, game: game, quantity: 1, price: game.price }]);
     }
 
     setFavorites(updatedFavorites);
   };
+
+
 
   const isGameSelected = (gameId) => {
     return favorites.includes(gameId);
@@ -66,18 +77,23 @@ export default function Navbar() {
     game.title.toLowerCase().includes(searchText.toLowerCase())
   );
 
-  function handleUpdateCartItemQuantity(gameId, amount) {
-    const updatedFavorites = card.map((item) => {
-      if (item.id === gameId) {
-        const selectedGame = games.find((game) => game.id === gameId);
+  const handleUpdateCartItemQuantity = (gameId, amount) => {
+    // console.log("Updating cart item quantity for game:", gameId, "with amount:", amount);
+    const updatedCard = card.map((item) => {
+      if (item.game.id === gameId) {
+        // console.log("Found matching item in cart:", item);
+        const selectedGame = games.find((game) => game.id === item.game.id);
         const newQuantity = item.quantity + amount;
-        const newPrice = newQuantity * selectedGame.price;
-        return { ...item, quantity: newQuantity, price: newPrice };
+        const nonNegativeQuantity = Math.max(newQuantity, 0);
+        const newPrice = nonNegativeQuantity * selectedGame.price;
+        // console.log("New quantity:", nonNegativeQuantity, "New price:", newPrice);
+        return { ...item, quantity: nonNegativeQuantity, price: newPrice, title: selectedGame.title };
       }
       return item;
     });
 
-    setCard(updatedFavorites);
+    // console.log("Updated cart:", updatedCard);
+    setCard(updatedCard);
   };
 
   const handleClearCart = () => {
@@ -103,7 +119,7 @@ export default function Navbar() {
               <div className="relative flex h-16 items-center justify-between">
                 {/* Mobile menu button */}
                 <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
-                  <Disclosure.Button className="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-orange-600 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
+                  <Disclosure.Button className="relative inline-flex items-center justify-center rounded-md p-2 bg-orange-600 text-white outline-none ring-2 ring-inset ring-white">
                     <span className="absolute -inset-0.5" />
                     <span className="sr-only">Open main menu</span>
                     {open ? (
@@ -114,12 +130,12 @@ export default function Navbar() {
                   </Disclosure.Button>
                 </div>
                 {/* Logo */}
-                <div className="flex flex-shrink-0 items-center justify-center w-full sm:w-auto">
+                <div className="flex flex-shrink-0 items-center justify-start ms-10 w-full sm:w-auto">
                   <img
                     className="h-8 w-auto"
                     src="../images/flask.png"
                     alt="LevelUp"
-                  /><span className="text-orange-600 text-xl font">Level-Up</span>
+                  /><span className="text-orange-600 text-xl font hidden">Level-Up</span>
                 </div>
                 {/* Navbar links */}
                 <div className="hidden sm:ml-6 sm:block">
@@ -323,7 +339,7 @@ export default function Navbar() {
           </span>
           {/* Checkout */}
           <span
-            className="text-sm text-gray-100 mt-2 flex items-center hover:text-orange-600"
+            className="text-sm text-gray-100 mt-2 flex items-center hover:underline"
             onClick={() => document.getElementById("my_modal_5").showModal()}
           >
             <ShoppingCartIcon className="h-5 w-5 mr-1 text-orange-600" />
@@ -341,7 +357,7 @@ export default function Navbar() {
                     key={item.id}
                     className="flex justify-between items-center w-full py-1 border-b border-gray-700"
                   >
-                    <span className="text-sm text-white">{item.title}</span>
+                    <span className="text-sm text-white">{item.game.title}</span>
                     <div className="flex-grow"></div> {/* Platzhalter, um den Raum zwischen title und price zu füllen */}
                     <span className="text-sm text-white mr-3">{item.price.toFixed(2)} Euro</span>
                     <div className="flex gap-2 items-center">
@@ -366,8 +382,11 @@ export default function Navbar() {
                       </button>
                     </div>
                   </div>
-                ))
-                : "Cart is empty"}
+                )) :
+                < div className="flex justify-center items-center text-white">
+                  Cart is empty
+                </div>
+              }
             </div>
             <div className="modal-action mt-4 flex justify-end">
               <form method="dialog">
@@ -384,11 +403,11 @@ export default function Navbar() {
                   className="btn bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded focus:outline-none focus:shadow-outline ml-2"
                   onClick={() => handleClearCart()} // handleClearCart ist eine Funktion, die den Warenkorb leert
                 >
-                  Delete all games
+                  Delete
                 </button>
                 {/* Button für "Jetzt bezahlen" mit Link */}
                 <a
-                  href="https://www.klarna.com/sofort/"
+                  href="https://www.paypal.me/chaz1q"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="btn bg-orange-600 hover:bg-green-600 text-white px-4 py-2 rounded ml-2 focus:outline-none focus:shadow-outline"
